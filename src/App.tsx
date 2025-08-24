@@ -1,7 +1,14 @@
+import ModalPortal from './components/ModalPortal/ModalPortal';
+
 export default function App() {
   return (
-    <div className="flex min-h-screen w-full items-center justify-center">
-      <h1 className="text-6xl font-bold text-pink-500">React Forms App</h1>
+    <div className="flex min-h-screen w-full items-center justify-center gap-10">
+      <ModalPortal text="Controlled">
+        <p className="text-white">Controlled</p>
+      </ModalPortal>
+      <ModalPortal text="Uncontrolled">
+        <p className="text-white">Uncontrolled</p>
+      </ModalPortal>
     </div>
   );
 }
