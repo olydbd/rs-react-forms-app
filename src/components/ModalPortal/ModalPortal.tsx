@@ -1,43 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 interface ModalPortalProps {
-  children: React.ReactNode;
-  text: string;
+  children: ReactNode;
+  onClose: () => void;
 }
 
-export default function ModalPortal({ children, text }: ModalPortalProps) {
-  const [showModal, setShowModal] = useState(false);
-
+export default function ModalPortal({ children, onClose }: ModalPortalProps) {
   useEffect(() => {
-    const esc = (e: KeyboardEvent) => e.key === 'Escape' && setShowModal(false);
+    const esc = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     document.addEventListener('keydown', esc);
     return () => document.removeEventListener('keydown', esc);
-  }, []);
+  }, [onClose]);
 
   return (
     <div>
-      <button
-        className="cursor-pointer rounded-2xl bg-pink-300 px-4 py-2 font-bold text-white hover:bg-pink-400"
-        onClick={() => setShowModal(true)}
-      >
-        {text}
-      </button>
-      {showModal &&
-        createPortal(
+      {createPortal(
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-white/50 p-4"
+          onClick={onClose}
+        >
           <div
-            className="fixed inset-0 flex items-center justify-center bg-white/50"
-            onClick={() => setShowModal(false)}
+            className="h-5/6 max-w-md min-w-md overflow-y-auto rounded-2xl bg-white p-10 shadow-2xl shadow-pink-500/50"
+            onClick={(e) => e.stopPropagation()}
           >
-            <div
-              className="rounded-2xl bg-pink-500 p-6"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {children}
-            </div>
-          </div>,
-          document.body,
-        )}
+            {children}
+          </div>
+        </div>,
+        document.body,
+      )}
     </div>
   );
 }
