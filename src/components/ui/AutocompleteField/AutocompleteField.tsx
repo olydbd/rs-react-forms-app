@@ -31,7 +31,7 @@ export default function AutocompleteField({
           <option key={option} value={option} />
         ))}
       </datalist>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      <p className="h-5 text-sm text-red-600">{error}</p>
     </>
   );
 }
