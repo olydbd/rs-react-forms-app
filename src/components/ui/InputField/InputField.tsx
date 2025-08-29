@@ -24,7 +24,7 @@ export default function InputField({
         {...rest}
         className="block h-8 w-full rounded-md border border-gray-300"
       />
-      <p className="h-5 text-sm text-red-600">{error}</p>
+      {error !== 'none' && <p className="h-2 text-sm text-red-600">{error}</p>}
     </>
   );
 }

@@ -36,7 +36,7 @@ export default function SelectField({
           </option>
         ))}
       </select>
-      <p className="h-1 text-sm text-red-600">{error}</p>
+      <p className="h-2 text-sm text-red-600">{error}</p>
     </>
   );
 }

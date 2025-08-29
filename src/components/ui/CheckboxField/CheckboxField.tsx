@@ -22,7 +22,7 @@ export default function CheckboxField({
           {label} *
         </label>
       )}
-      <p className="h-5 text-sm text-red-600">{error}</p>
+      <p className="h-2 text-sm text-red-600">{error}</p>
     </>
   );
 }

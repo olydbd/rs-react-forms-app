@@ -97,7 +97,7 @@ export default function UncontrolledForm({ onClose }: ControlledFormProps) {
           id="password"
           label="Password"
           name="password"
-          error={errors.confirm}
+          error={errors.password}
         />
       </div>
 
@@ -139,7 +139,7 @@ export default function UncontrolledForm({ onClose }: ControlledFormProps) {
         />
       </div>
 
-      <div className="mb-4">
+      <div className="mb-8">
         <CheckboxField
           id="terms"
           label="I accept the Terms and Conditions"
