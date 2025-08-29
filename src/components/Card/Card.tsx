@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import CatPic from '../../assets/cat-2.jfif';
 import type { SchemaStore } from '../../features/formData/formDataSlice';
 
@@ -7,8 +8,19 @@ interface CardProps {
 }
 
 export default function Card({ title, data }: CardProps) {
+  const [highlight, setHighlight] = useState(false);
+
+  useEffect(() => {
+    setHighlight(true);
+    const timer = setTimeout(() => setHighlight(false), 1000);
+
+    return () => clearTimeout(timer);
+  }, [data]);
+
   return (
-    <div className="flex h-full min-w-xs flex-col gap-3 rounded-2xl border border-pink-700 p-10">
+    <div
+      className={`flex h-full min-w-xs flex-col gap-3 rounded-2xl border ${highlight ? 'bg-pink-500/20' : 'bg-none'} border-pink-700 p-10 transition-colors duration-500`}
+    >
       {data ? (
         <>
           <h2 className="text-lg font-bold text-pink-700 uppercase">{title}</h2>
