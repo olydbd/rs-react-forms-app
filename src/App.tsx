@@ -28,6 +28,7 @@ export default function App() {
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-center gap-10 p-5">
+      <h1 className="mb-10 text-6xl font-bold text-pink-300">React Forms</h1>
       <div className="flex items-center justify-center gap-10">
         <button
           className="cursor-pointer rounded-2xl bg-pink-400 px-4 py-2 font-bold text-white shadow-xl hover:bg-pink-500"
