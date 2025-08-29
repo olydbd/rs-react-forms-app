@@ -4,10 +4,14 @@ import ModalPortal from './components/ModalPortal/ModalPortal';
 import { useAppSelector } from './app/hooks';
 import type { RootState } from './app/store';
 import Card from './components/Card/Card';
+import UncontrolledForm from './components/UncontrolledForm/UncontrolledForm';
 
 export default function App() {
   const formControlledData = useAppSelector(
-    (state: RootState) => state.formData.data,
+    (state: RootState) => state.formData.controlledForm,
+  );
+  const formUncontrolledData = useAppSelector(
+    (state: RootState) => state.formData.uncontrolledForm,
   );
 
   const [modalStates, setModalStates] = useState({
@@ -41,6 +45,7 @@ export default function App() {
 
       <div className="flex flex-wrap items-center justify-center gap-10">
         <Card title="Controlled" data={formControlledData} />
+        <Card title="Uncontrolled" data={formUncontrolledData} />
       </div>
 
       {modalStates.controlled && (
@@ -50,7 +55,7 @@ export default function App() {
       )}
       {modalStates.uncontrolled && (
         <ModalPortal onClose={() => handleModalClose('uncontrolled')}>
-          <p>Uncontrolled</p>
+          <UncontrolledForm onClose={() => handleModalClose('uncontrolled')} />
         </ModalPortal>
       )}
     </div>

@@ -5,10 +5,10 @@ import InputField from '../ui/InputField/InputField';
 import SelectField from '../ui/SelectField/SelectField';
 import { genderOptions } from '../../utils/constants';
 import CheckboxField from '../ui/CheckboxField/CheckboxField';
-import { addData } from '../../features/formData/formDataSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import type { ChangeEvent } from 'react';
 import AutocompleteField from '../ui/AutocompleteField/AutocompleteField';
+import { addControlledData } from '../../features/formData/formDataSlice';
 
 interface ControlledFormProps {
   onClose: () => void;
@@ -42,7 +42,7 @@ export default function ControlledForm({ onClose }: ControlledFormProps) {
   };
 
   const onSubmit = (data: Schema) => {
-    dispatch(addData(data));
+    dispatch(addControlledData(data));
     onClose();
   };
 

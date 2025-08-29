@@ -3,25 +3,33 @@ import type { Schema } from '../../utils/validation';
 import type { RootState } from '../../app/store';
 
 export interface FormDataState {
-  data: Schema | null;
+  controlledForm: Schema | null;
+  uncontrolledForm: Schema | null;
 }
 
 const initialState: FormDataState = {
-  data: null,
+  controlledForm: null,
+  uncontrolledForm: null,
 };
 
 export const formDataSlice = createSlice({
   name: 'formData',
   initialState,
   reducers: {
-    addData: (state, action: PayloadAction<Schema>) => {
-      state.data = action.payload;
+    addControlledData: (state, action: PayloadAction<Schema>) => {
+      state.controlledForm = action.payload;
+    },
+    addUncontrolledData: (state, action: PayloadAction<Schema>) => {
+      state.uncontrolledForm = action.payload;
     },
   },
 });
 
-export const { addData } = formDataSlice.actions;
+export const { addControlledData, addUncontrolledData } = formDataSlice.actions;
 
-export const formData = (state: RootState) => state.formData.data;
+export const formControlledData = (state: RootState) =>
+  state.formData.controlledForm;
+export const formUncontrolledData = (state: RootState) =>
+  state.formData.uncontrolledForm;
 
 export default formDataSlice.reducer;

@@ -1,5 +1,5 @@
 import type { Schema } from '../../utils/validation';
-import CatPic from '../../assets/cat-1.jpg';
+import CatPic from '../../assets/cat-2.jfif';
 
 interface CardProps {
   title: string;
@@ -11,7 +11,7 @@ export default function Card({ title, data }: CardProps) {
     <div className="flex h-full min-w-xs flex-col gap-3 rounded-2xl border border-pink-700 p-10">
       {data ? (
         <>
-          <h2 className="text-lg font-bold text-pink-700">{title}</h2>
+          <h2 className="text-lg font-bold text-pink-700 uppercase">{title}</h2>
           <div className="flex w-full items-center justify-center">
             {data.picture && (
               <img
@@ -22,23 +22,23 @@ export default function Card({ title, data }: CardProps) {
             )}
           </div>
           <div className="flex justify-between text-pink-700">
-            <p>Name:</p>
+            <p className="font-bold">Name:</p>
             <p>{data.name}</p>
           </div>
           <div className="flex justify-between text-pink-700">
-            <p>Age:</p>
+            <p className="font-bold">Age:</p>
             <p>{data.age}</p>
           </div>
           <div className="flex justify-between text-pink-700">
-            <p>Email:</p>
+            <p className="font-bold">Email:</p>
             <p>{data.email}</p>
           </div>
           <div className="flex justify-between text-pink-700">
-            <p>Gender:</p>
+            <p className="font-bold">Gender:</p>
             <p>{data.gender}</p>
           </div>
           <div className="flex justify-between text-pink-700">
-            <p>Country:</p>
+            <p className="font-bold">Country:</p>
             <p>{data.country}</p>
           </div>
         </>
@@ -47,7 +47,7 @@ export default function Card({ title, data }: CardProps) {
           <img
             src={CatPic}
             alt="Cat"
-            className="max-h-60 max-w-60 rounded-full"
+            className="max-h-60 max-w-60 rounded-2xl"
           />
         </div>
       )}
