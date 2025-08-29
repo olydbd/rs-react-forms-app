@@ -7,6 +7,8 @@ import InputField from '../ui/InputField/InputField';
 import SelectField from '../ui/SelectField/SelectField';
 import { schema, type Schema } from '../../utils/validation';
 import { addUncontrolledData } from '../../features/formData/formDataSlice';
+import fileToBase64 from '../../utils/fileToBase64';
+import FileField from '../ui/FileField/FileField';
 
 interface ControlledFormProps {
   onClose: () => void;
@@ -21,20 +23,16 @@ export default function UncontrolledForm({ onClose }: ControlledFormProps) {
     {},
   );
 
-  const pictureBase64Ref = useRef<string>('');
+  const pictureFileRef = useRef<File | null>(null);
+
   const handlePictureChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      pictureBase64Ref.current = reader.result as string;
-    };
-    reader.readAsDataURL(file);
+    if (file) {
+      pictureFileRef.current = file;
+    }
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!formRef.current) return;
@@ -49,7 +47,7 @@ export default function UncontrolledForm({ onClose }: ControlledFormProps) {
       gender: formData.get('gender'),
       country: formData.get('country'),
       terms: formData.get('terms') === 'on',
-      picture: pictureBase64Ref.current,
+      picture: pictureFileRef.current,
     };
 
     const parsed = schema.safeParse(formValues);
@@ -64,7 +62,14 @@ export default function UncontrolledForm({ onClose }: ControlledFormProps) {
       return;
     }
 
-    dispatch(addUncontrolledData(parsed.data));
+    const base64 = await fileToBase64(parsed.data.picture as File);
+
+    const storeData = {
+      ...parsed.data,
+      picture: base64,
+    };
+
+    dispatch(addUncontrolledData(storeData));
     onClose();
   };
 
@@ -116,15 +121,10 @@ export default function UncontrolledForm({ onClose }: ControlledFormProps) {
       </div>
 
       <div className="mb-4">
-        <label htmlFor="picture" className="mb-1 block">
-          Upload Picture
-        </label>
-        <input
+        <FileField
           id="picture"
-          type="file"
-          accept="image/png, image/jpeg, image/jpg"
-          name="picture"
-          className="block w-full cursor-pointer text-sm text-gray-700 file:mr-4 file:cursor-pointer file:rounded-lg file:border file:border-pink-600 file:px-4 file:py-2 file:text-pink-600 hover:file:border-gray-700 hover:file:text-gray-700"
+          label="Upload Picture"
+          error={errors.picture}
           onChange={handlePictureChange}
         />
       </div>
@@ -142,7 +142,7 @@ export default function UncontrolledForm({ onClose }: ControlledFormProps) {
       <div className="mb-4">
         <CheckboxField
           id="terms"
-          label="Accept T&C"
+          label="I accept the Terms and Conditions"
           name="terms"
           error={errors.terms}
         />

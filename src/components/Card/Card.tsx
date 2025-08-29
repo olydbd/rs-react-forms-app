@@ -1,9 +1,9 @@
-import type { Schema } from '../../utils/validation';
 import CatPic from '../../assets/cat-2.jfif';
+import type { SchemaStore } from '../../features/formData/formDataSlice';
 
 interface CardProps {
   title: string;
-  data: Schema | null;
+  data: SchemaStore | null;
 }
 
 export default function Card({ title, data }: CardProps) {

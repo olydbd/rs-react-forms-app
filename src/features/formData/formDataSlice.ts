@@ -2,9 +2,11 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit/react';
 import type { Schema } from '../../utils/validation';
 import type { RootState } from '../../app/store';
 
+export type SchemaStore = Omit<Schema, 'picture'> & { picture: string };
+
 export interface FormDataState {
-  controlledForm: Schema | null;
-  uncontrolledForm: Schema | null;
+  controlledForm: SchemaStore | null;
+  uncontrolledForm: SchemaStore | null;
 }
 
 const initialState: FormDataState = {
@@ -16,10 +18,10 @@ export const formDataSlice = createSlice({
   name: 'formData',
   initialState,
   reducers: {
-    addControlledData: (state, action: PayloadAction<Schema>) => {
+    addControlledData: (state, action: PayloadAction<SchemaStore>) => {
       state.controlledForm = action.payload;
     },
-    addUncontrolledData: (state, action: PayloadAction<Schema>) => {
+    addUncontrolledData: (state, action: PayloadAction<SchemaStore>) => {
       state.uncontrolledForm = action.payload;
     },
   },

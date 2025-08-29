@@ -9,6 +9,8 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import type { ChangeEvent } from 'react';
 import AutocompleteField from '../ui/AutocompleteField/AutocompleteField';
 import { addControlledData } from '../../features/formData/formDataSlice';
+import fileToBase64 from '../../utils/fileToBase64';
+import FileField from '../ui/FileField/FileField';
 
 interface ControlledFormProps {
   onClose: () => void;
@@ -31,18 +33,20 @@ export default function ControlledForm({ onClose }: ControlledFormProps) {
   const handlePictureChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64 = reader.result as string;
-      setValue('picture', base64);
-    };
-    reader.readAsDataURL(file);
+    if (file) {
+      setValue('picture', file, { shouldValidate: true });
+    }
   };
 
-  const onSubmit = (data: Schema) => {
-    dispatch(addControlledData(data));
+  const onSubmit = async (data: Schema) => {
+    const base64 = await fileToBase64(data.picture as File);
+
+    const storeData = {
+      ...data,
+      picture: base64,
+    };
+
+    dispatch(addControlledData(storeData));
     onClose();
   };
 
@@ -104,14 +108,10 @@ export default function ControlledForm({ onClose }: ControlledFormProps) {
       </div>
 
       <div className="mb-4">
-        <label htmlFor="picture" className="mb-1 block">
-          Upload Picture
-        </label>
-        <input
+        <FileField
           id="picture"
-          type="file"
-          accept="image/png, image/jpeg, image/jpg"
-          className="block w-full cursor-pointer text-sm text-gray-700 file:mr-4 file:cursor-pointer file:rounded-lg file:border file:border-pink-600 file:px-4 file:py-2 file:text-pink-600 hover:file:border-gray-700 hover:file:text-gray-700"
+          label="Upload Picture"
+          error={errors.picture?.message}
           onChange={handlePictureChange}
         />
       </div>
@@ -129,7 +129,7 @@ export default function ControlledForm({ onClose }: ControlledFormProps) {
       <div className="mb-4">
         <CheckboxField
           id="terms"
-          label="Accept T&C"
+          label="I accept the Terms and Conditions"
           error={errors.terms?.message}
           {...register('terms')}
         />

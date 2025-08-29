@@ -42,7 +42,16 @@ export const schema = z
 
     terms: z.literal(true, 'You must accept the terms and conditions'),
 
-    picture: z.string().optional(),
+    picture: z
+      .file('Please upload a file')
+      .refine(
+        (file) => file.size <= 2 * 1024 * 1024,
+        'File must be smaller than 2MB',
+      )
+      .refine(
+        (file) => ['image/jpeg', 'image/jpg', 'image/png'].includes(file.type),
+        'Only JPEG, JPG, PNG files are allowed',
+      ),
 
     country: z.string().min(1, 'Required field'),
   })
